@@ -10,10 +10,38 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{/* StayEasy design system (from Figma) */--primary:#633541;--secondary:#D9C5AC;--ink:#302832;--rose:#C18F91;--slate:#899BA8;--bg:#F8F3EC;--card:#FEFDFB;--line:#E3D6C4;--field:#A1868D;--soft:#F0E8DE;--muted:#59535B;--bad:#B3261E;--ok:#1F7A4D;--ease:cubic-bezier(.2,.8,.2,1)}
+:root{/* StayEasy design system (from Figma) */
+  --primary:#633541;        /* Royal Outblood */
+  --secondary:#D9C5AC;      /* Champagne Beige */
+  --ink:#1A0F18;            /* Dark Text */
+  --rose:#C18F91;           /* Dusty Rose */
+  --slate:#8FA8B8;          /* Smoky Slate */
+  --bg:#F8F3EC;             /* Warm Ivory */
+  --card:#FEFDFB;
+  --line:#E3D6C4;
+  --field:#A1868D;
+  --soft:#F0E8DE;
+  --muted:#59535B;
+  --bad:#B3261E;
+  --ok:#1F7A4D;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;font:16px/1.55 Manrope,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-weight:800;letter-spacing:-.02em;margin:0 0 .5rem;line-height:1.1}h2{font-size:clamp(1.6rem,4vw,2.1rem)}
+body{margin:0;font:16px/1.5 Manrope,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.02em;margin:0 0 .5rem;line-height:1.1}
+h1{font-size:clamp(2rem,5vw,2.625rem)}
+h2{font-size:clamp(1.6rem,4vw,2rem)}
+h3{font-size:1.5rem}
+h4{font-size:1.25rem}
+/* Typography scale (Figma) */
+.text-hero{font-size:clamp(2rem,5vw,3rem);font-weight:600;line-height:1.167}         /* 48px / LH 56px */
+.text-h1{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:600;line-height:1.2}           /* 40px / LH 48px */
+.text-h2{font-size:clamp(1.25rem,3vw,2rem);font-weight:600;line-height:1.25}           /* 32px / LH 40px */
+.text-h3{font-size:1.5rem;font-weight:600;line-height:1.333}                           /* 24px / LH 32px */
+.text-h4{font-size:1.25rem;font-weight:500;line-height:1.4}                            /* 20px / LH 28px */
+.text-body-lg{font-size:1.25rem;font-weight:400;line-height:1.4}                       /* 20px / LH 28px */
+.text-body{font-size:1rem;font-weight:400;line-height:1.5}                             /* 16px / LH 24px */
+.text-label{font-size:1rem;font-weight:600;line-height:1.5}                            /* 16px SemiBold / LH 24px */
 .ic{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
 header{position:sticky;top:0;z-index:20;background:rgba(248,243,236,.85);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s}
 header.scrolled{border-color:var(--line);box-shadow:0 8px 24px -18px rgba(48,40,50,.5)}
@@ -30,14 +58,16 @@ label{display:block;font-weight:600;margin:.9rem 0 .3rem}
 input,select,textarea{width:100%;font:inherit;padding:.75rem .85rem;border:1.5px solid var(--line);border-radius:12px;background:#fff;transition:border-color .2s,box-shadow .2s}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,53,65,.12)}
 input[type=checkbox],input[type=radio]{width:auto}
-button.go{display:block;width:100%;background:var(--primary);color:#fff;border:0;border-radius:14px;padding:.95rem 1.1rem;font:700 1rem Manrope,sans-serif;cursor:pointer;margin-top:1rem;transition:transform .25s var(--ease),box-shadow .25s}
-button.go:hover{transform:translateY(-2px);box-shadow:0 14px 26px -14px rgba(99,53,65,.7)}button.go:active{transform:none}
+.input-error{border-color:var(--bad)!important;box-shadow:0 0 0 4px rgba(179,38,30,.12)!important}
+button.go{display:block;width:100%;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:1rem 1.25rem;font:600 1rem Manrope,sans-serif;cursor:pointer;margin-top:1rem;transition:opacity .25s var(--ease),transform .25s var(--ease),box-shadow .25s}
+button.go:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(99,53,65,.55)}button.go:active{transform:none}
 button.go:disabled{opacity:.5;cursor:wait;transform:none;box-shadow:none}
-button.alt{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--field)}button.alt:hover{box-shadow:inset 0 0 0 1.5px var(--primary)}
+button.alt{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--field);border-radius:12px;padding:.75rem 1rem;font:600 .95rem Manrope,sans-serif}button.alt:hover{box-shadow:inset 0 0 0 1.5px var(--primary)}
 :focus-visible{outline:3px solid var(--rose);outline-offset:2px}
-.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.4rem;border-radius:99px;border:0;font:700 1rem Manrope,sans-serif;cursor:pointer;background:var(--secondary);color:var(--primary);transition:transform .25s var(--ease)}
-.btn:hover{transform:translateY(-2px)}.btn .ic{transition:transform .25s}.btn:hover .ic{transform:translateX(4px)}
-.btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55)}.btn.sm{padding:.55rem 1rem;background:var(--primary);color:#fff;font-size:.9rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.95rem 1.5rem;border-radius:12px;border:0;font:600 1rem Manrope,sans-serif;cursor:pointer;background:var(--secondary);color:var(--primary);transition:transform .25s var(--ease),box-shadow .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(99,53,65,.55)}.btn .ic{transition:transform .25s}.btn:hover .ic{transform:translateX(4px)}
+.btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55);border-radius:12px;padding:.75rem 1rem}.btn.sm{padding:.65rem 1rem;background:var(--primary);color:#fff;font-size:.9rem;border-radius:12px}
+.btn-sm{padding:.55rem 1rem;background:var(--primary);color:#fff;font-size:.9rem;border-radius:12px}
 .msg{padding:.75rem .95rem;border-radius:12px;margin-top:.9rem;font-weight:500}
 .msg.bad{background:#FBE9E7;color:var(--bad)}.msg.ok{background:#E2F3EA;color:var(--ok)}.msg.info{background:var(--soft)}
 .muted{color:var(--muted)}.sm{font-size:.85rem}
@@ -109,9 +139,10 @@ const API = 'https://hotel-booking-eagg.onrender.com';
 const TEST_MODE = false;   // set true to practise without Paystack (nothing is charged)
 /* ID upload from Backend: POST /api/bookings/:bookingId/id-verification as multipart form data with
    idType and photo. We never set Content-Type ourselves, the browser does. */
-const ID = { uploadPath: '/api/bookings/:bookingId/id-verification', field: 'photo',
-             alt: [],   // Backend confirmed the field is 'photo'
-             types: [['passport', 'Passport'], ['drivers_license', "Driver's licence"], ['national_id', 'National ID']] };   // allowed idType values still to be confirmed by Backend
+const ID = { uploadPath: '/api/bookings/:bookingId/id-verification',
+             field: 'photo',
+             alt: ['image', 'file', 'id_photo', 'id_verification'],
+             types: [['passport', 'Passport'], ['drivers_license', "Driver's licence"], ['national_id', 'National ID']] };
 const PAYMENT = { initPath: '/api/payment/initialize', verifyPath: '/api/payment/verify' };   // received from Backend
 
 /* ============ 2. APP MEMORY ============ */
@@ -215,13 +246,13 @@ const stepper = n => `<ol class="stp" aria-label="Booking progress">${STEPS.map(
    Pre-arrival path:  Home > Sign in/up > Dashboard > Pre-arrival check-in > Digital room access > Recommendations > Loyalty */
 const screens = {
   home: () => `<section class="hero"><span class="eyebrow">StayEasy · Digital guest experience</span>
-    <h1 aria-label="Stay easy."><span class="ln"><i>Stay</i></span><span class="ln"><i>easy.</i></span></h1>
+    <h1 aria-label="Arrive. Unwind. Feel at home."><span class="ln"><i>Arrive.</i></span><span class="ln"><i>Unwind.</i></span><span class="ln"><i>Feel at home.</i></span></h1>
     <p>Book your room, check in before you arrive and open your door from your phone.</p>
     <div class="cta"><button class="btn" onclick="go('rooms')">Book now ${I('arrow')}</button><button class="btn ghost" onclick="go('dashboard')">Pre-arrival check-in</button></div>
     <span class="orb o1"></span><span class="orb o2"></span></section>
     <div class="marquee" aria-hidden="true"><div class="track">${[0, 1].map(() => ['Book', 'Check in', 'Unlock', 'Stay easy'].map(w => `<span>${w}</span>`).join('')).join('')}</div></div>
-    <h2 class="reveal">Three steps. No queues.</h2>
-    <div class="how">${[['01', 'Choose your room', 'Pick the dates and the room that suits you.'], ['02', 'Verify and pay', 'Confirm your ID and pay securely with Paystack.'], ['03', 'Check in and unlock', 'Check in online and get your room code.']]
+    <h2 class="reveal">A room for every kind of stay</h2>
+    <div class="how">${[['01', 'Choose your room', 'Pick the dates and the room that suits you.'], ['02', 'Guest details', 'Tell us who you are and verify your ID.'], ['03', 'Check in and unlock', 'Check in online and get your room code.']]
       .map(([n, t, d], i) => `<div class="card reveal" style="--d:${i}"><div class="num">${n}</div><h3>${t}</h3><p class="muted" style="margin:0">${d}</p></div>`).join('')}</div>`,
 
   notfound: () => `<div class="card"><h2>Page not found</h2><p class="muted">That address doesn't exist on StayEasy.</p><button class="go" onclick="history.replaceState({}, '', '/');go('home')">Go to the home page</button></div>`,
@@ -237,13 +268,14 @@ const screens = {
     <p style="text-align:center">${S.mode === 'up' ? 'Have an account?' : 'New here?'}
       <button class="link" onclick="S.mode='${S.mode === 'up' ? 'in' : 'up'}';S.error='';draw()">${S.mode === 'up' ? 'Sign in' : 'Create an account'}</button></p></div>`,
 
-  rooms: () => `<h2>Rooms</h2>${S.hotels.length > 1 ? `<label for="ht">Hotel</label><select id="ht" onchange="changeHotel(this.value)">${S.hotels.map(h => `<option value="${sid(h._id)}" ${h._id === S.hotel ? 'selected' : ''}>${esc(h.name)}</option>`).join('')}</select>` : ''}
+  rooms: () => `<h2>A room for every kind of stay</h2>${S.hotels.length > 1 ? `<label for="ht">Hotel</label><select id="ht" onchange="changeHotel(this.value)">${S.hotels.map(h => `<option value="${sid(h._id)}" ${h._id === S.hotel ? 'selected' : ''}>${esc(h.name)}</option>`).join('')}</select>` : ''}
     ${S.hotelsError ? `<div class="msg bad">${S.hotelsError}</div>` : !S.loaded ? '<div class="rgrid">' + '<div class="rc sk"></div>'.repeat(3) + '</div>' : ''}${msg()}
     <div class="rgrid">${S.rooms.filter(r => r.isAvailable !== false).map((r, i) => { const im = safeUrl([].concat(r.images || [])[0]); return `<article class="rc reveal" style="--d:${i % 3}"><div class="phw"><div class="ph" ${im ? `style="background-image:url('${im}')"` : ''}>${im ? '' : I('bed')}</div></div>
-      <div class="rb"><div class="rt"><h3>${esc(r.roomType || 'Room')}</h3><span class="chip">Room ${esc(r.roomNumber || '')}</span></div>
+      <div class="rb"><div class="rt"><h3>${esc(r.roomType || 'Room')}</h3><span class="chip">${esc(r.tier || 'Room')}</span></div>
       <p class="muted">${esc(r.description || 'A comfortable room for your stay.')}</p>
+      ${r.amenities?.length ? `<p class="muted sm" style="margin:0">${[].concat(r.amenities).slice(0, 4).join(' · ')}</p>` : ''}
       <div class="rf"><div><span class="pr">${naira(r.pricePerNight)}</span><span class="muted"> / night</span><div class="muted sm">Up to ${r.capacity || 2} guests</div></div>
-      <button class="btn sm" onclick="S.pick='${sid(r._id)}';go('roomDetail')">Details ${I('arrow')}</button></div></div></article>`; }).join('')}</div>
+      <button class="btn sm" onclick="S.pick='${sid(r._id)}';go('roomDetail')">View details ${I('arrow')}</button></div></div></article>`; }).join('')}</div>
     ${S.loaded && !S.rooms.length && !S.hotelsError ? '<p class="muted">No rooms found for this hotel yet.</p>' : ''}`,
 
   roomDetail: () => { const r = room(); return !r ? empty('Choose a room first.', 'See rooms', 'rooms') :
@@ -254,7 +286,7 @@ const screens = {
     <button class="go" onclick="go('bookingDetails')">Select this room</button></div>`; },
 
   bookingDetails: () => { const r = room(); return !r ? empty('Choose a room first.', 'See rooms', 'rooms') :
-    `${backTo('roomDetail', 'Room details')}<h2>Booking details</h2><div class="card"><p style="margin-top:0"><b>${esc(r.roomType || 'Room')}</b> · Room ${esc(r.roomNumber || '')}</p>
+    `${backTo('roomDetail', 'Room details')}<h2>Booking details</h2><div class="card"><p style="margin-top:0"><b>${esc(r.roomType || 'Room')}</b> · Room ${esc(r.roomNumber || 'to be assigned')}</p>
     <label for="from">Check-in date</label><input id="from" type="date" min="${today()}" value="${S.from}" onchange="setFrom(this.value)">
     <label for="to">Check-out date</label><input id="to" type="date" min="${S.from || today()}" value="${S.to}" onchange="S.to=this.value;draw()">
     <label for="gs">Guests</label><input id="gs" type="number" min="1" max="${r.capacity || 10}" value="${S.guests}" onchange="S.guests=+this.value||1">
@@ -267,7 +299,7 @@ const screens = {
     ${idChip(S.pending)}
     ${ID.uploadPath ? '' : '<div class="msg info">ID verification is not connected to Backend yet. Payment stays blocked until it is.</div>'}
     <label for="idt">ID type</label><select id="idt">${ID.types.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>
-    <label for="idf">ID photo</label><input id="idf" type="file" accept="image/*">${msg()}
+    <label for="idf">ID photo</label><input id="idf" type="file" accept="image/*" class="idf-input" ${S.pending?.idVerificationStatus !== 'Verified' ? '' : 'disabled'}>${msg()}
     <button class="go" onclick="doIdVerify()" ${S.busy ? 'disabled' : ''}>${S.busy ? 'Checking your ID…' : 'Verify my ID'}</button></div>`,
 
   pay: () => !S.pending ? empty('Choose a room first.', 'See rooms', 'rooms') : `<h2>Payment</h2><div class="card">
@@ -281,12 +313,12 @@ const screens = {
   paymentDone: () => `<h2>Payment</h2><div class="card">${S.busy ? '<p style="margin:0">Confirming your payment…</p>' : msg() + `<button class="go" onclick="go('bookings')">See my bookings</button>`}</div>`,
 
   confirmed: () => { const b = S.confirmed; return !b ? empty('No booking to show yet.', 'My bookings', 'bookings') :
-    `<h2>Booking confirmed</h2><div class="card"><div class="msg ok" style="margin-top:0">${S.ok || 'Your booking is confirmed.'}</div>
-    <p><b>${hotelName(b)}</b><br>${esc(roomOf(b).roomType || 'Room')} · ${day(b.checkInDate)} to ${day(b.checkOutDate)}<br>Total ${naira(b.totalAmount)}</p>
+    `<h2>Your stay is confirmed!</h2><div class="card"><div class="msg ok" style="margin-top:0">${S.ok || 'Your booking is confirmed.'}</div>
+    <p style="margin-top:1rem"><b>${hotelName(b)}</b><br>${esc(roomOf(b).roomType || 'Room')} · Room ${esc(roomOf(b).roomNumber || 'to be assigned')}<br>${day(b.checkInDate)} to ${day(b.checkOutDate)}<br>Total ${naira(b.totalAmount)}</p>
     <p class="muted" style="margin:0">Next: check in online before you arrive and get your room code.</p>
     <button class="go" onclick="go('checkin')">Pre-arrival check-in</button><button class="go alt" onclick="go('dashboard')">Go to dashboard</button></div>`; },
 
-  dashboard: () => `<h2>Hello${S.user?.firstName ? ', ' + esc(S.user.firstName) : ''}</h2><p class="muted" style="margin:0 0 1rem">What would you like to do?</p>${msg()}
+  dashboard: () => `<h2>Welcome back${S.user?.firstName ? ', ' + esc(S.user.firstName) : ''}</h2><p class="muted" style="margin:0 0 1rem">What would you like to do?</p>${msg()}
     <div class="tiles">${[['bookings', 'cal', 'My bookings', S.bookings.length + ' booking(s)'], ['checkin', 'shield', 'Pre-arrival check-in', 'Before you arrive'], ['key', 'key', 'Digital room access', 'Your room code'],
       ['offers', 'gift', 'Recommendations', 'Picked for you'], ['rewards', 'star', 'Loyalty', (S.user?.loyaltyPoints || 0).toLocaleString() + ' points'], ['requests', 'bell', 'Service requests', 'Housekeeping and more']]
       .map(([v, ic, t, sub], i) => `<button class="tile reveal" style="--d:${i}" onclick="go('${v}')"><span class="ti">${I(ic)}</span><b>${t}</b><span class="sub">${sub}</span></button>`).join('')}</div>
@@ -338,10 +370,14 @@ const screens = {
 };
 
 /* ============ 7. ACTIONS ============
-   Always read what the guest typed BEFORE calling run(), because run() redraws the screen. */
+   Always read what the guest typed BEFORE calling run(), because run() redraws the screen.
+   Enhanced with better error handling and loading states */
 async function run(fn) {
-  S.busy = true; S.error = ''; draw();
-  try { await fn(); } catch (e) { S.error = e.message; if (!S.token && S.view === 'login') S.info = ''; }
+  S.busy = true; S.error = ''; S.info = ''; draw();
+  try { await fn(); } catch (e) {
+    S.error = e.message || 'Something went wrong';
+    if (!S.token && S.view === 'login') S.info = '';
+  }
   S.busy = false; draw();
 }
 async function loadHotels() {
@@ -387,18 +423,21 @@ function toVerify() {
     S.view = 'idVerify';
   });
 }
-/* ID check is a fake for now. In the Figma flow it happens before payment; Backend planned it at check-in. */
+/* ID check. Backend expects multipart/form-data with idType and photo fields.
+   We never set Content-Type ourselves — the browser does. */
 function doIdVerify() {
   const file = document.getElementById('idf')?.files[0], idType = document.getElementById('idt')?.value || ID.types[0][0];
   run(async () => {
     if (!file) throw new Error("We couldn't read your ID. Add a clear photo and try again.");
     if (!ID.uploadPath) throw new Error('ID verification is not connected to Backend yet, so payment is blocked. Ask Backend for the ID upload link.');
+    if (file.size > 10 * 1024 * 1024) throw new Error('The ID photo is too large. Please choose a file under 10 MB.');
     const id = S.pending._id, url = ID.uploadPath.replace(':bookingId', encodeURIComponent(id));
     let d, last = null;
-    for (const f of [ID.field, ...ID.alt.filter(x => x !== ID.field)]) {
+    const fields = [ID.field, ...ID.alt.filter(x => x !== ID.field)];
+    for (const f of fields) {
       const fd = new FormData(); fd.append('idType', idType); fd.append(f, file);
       try { d = await call(url, { method: 'POST', body: fd }); ID.field = f; last = null; console.info('ID photo field that Backend accepted:', f); break; }
-      catch (e) { last = e; if (!/unexpected.*field/i.test(e.message)) throw e; }
+      catch (e) { last = e; if (!/unexpected.*field|400/i.test(e.message)) throw e; }
     }
     if (last) throw new Error('Backend did not accept the photo field name. Ask Backend which field name the ID upload expects.');
     const fromReply = [d.booking, d.data].find(x => x && typeof x === 'object' && x.idVerificationStatus);
@@ -446,8 +485,15 @@ function doCheckIn(id) {
   const file = document.getElementById('idf')?.files[0], needId = !S.idDone[id];
   run(async () => {
     if (needId && !file) throw new Error('Add a photo of your ID first.');
-    await fake.checkIn(needId ? file : true);
-    S.idDone[id] = true; S.checkedIn[id] = true; delete S.codes[id]; S.codeErr = '';
+    if (needId) {
+      // Upload ID photo via backend endpoint
+      const idType = document.getElementById('idt')?.value || ID.types[0][0];
+      const fd = new FormData(); fd.append('idType', idType); fd.append('photo', file);
+      const url = ID.uploadPath.replace(':bookingId', encodeURIComponent(id));
+      await call(url, { method: 'POST', body: fd });
+      S.idDone[id] = true;
+    }
+    S.checkedIn[id] = true; delete S.codes[id]; S.codeErr = '';
   });
 }
 async function refreshPoints() {   // GET /api/guests/points
@@ -455,13 +501,13 @@ async function refreshPoints() {   // GET /api/guests/points
     const d = await call('/api/guests/points'), x = d.data || d;
     const pts = x.points ?? x.loyaltyPoints, tier = x.loyaltyTier ?? x.tier;
     if (pts !== undefined) { S.user = { ...S.user, loyaltyPoints: pts, ...(tier ? { loyaltyTier: tier } : {}) }; store.set({ token: S.token, user: S.user }); if (['dashboard', 'rewards'].includes(S.view)) draw(); }
-  } catch {}
+  } catch (e) { console.error('Failed to refresh points:', e); S.info = 'Unable to refresh loyalty points. Please try again later.'; }
 }
 async function loadRequests() {   // GET /api/requests/my-requests
   try {
     S.requests = pick(await call('/api/requests/my-requests'), 'requests');
     if (S.view === 'requests' && !document.getElementById('nt')?.value) draw();
-  } catch {}
+  } catch (e) { console.error('Failed to load requests:', e); }
 }
 async function loadCode(force) {   // GET /api/bookings/:bookingId/room-code
   const b = S.bookings.filter(eligible)[0];
@@ -472,7 +518,11 @@ async function loadCode(force) {   // GET /api/bookings/:bookingId/room-code
     const c = x.roomAccessCode ?? x.accessCode ?? x.code ?? x.roomCode;
     if (!c) throw new Error('Your room code is not ready yet.');
     S.codes[b._id] = String(c);
-  } catch (e) { S.codeErr = e.message; }
+    draw();
+  } catch (e) {
+    S.codeErr = e.message;
+    console.error('Failed to load room code:', e);
+  }
   if (S.view === 'key') draw();
 }
 function doRequest() {   // POST /api/requests
