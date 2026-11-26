@@ -72,7 +72,11 @@ button.alt{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--f
 .msg.bad{background:#FBE9E7;color:var(--bad)}.msg.ok{background:#E2F3EA;color:var(--ok)}.msg.info{background:var(--soft)}
 .muted{color:var(--muted)}.sm{font-size:.85rem}
 .chip{display:inline-block;padding:.12rem .65rem;border-radius:99px;background:var(--soft);font-size:.82rem;font-weight:700}
-.big{font-weight:800;font-size:2.6rem;letter-spacing:-.03em}
+.checkout-layout{display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}
+@media(max-width:900px){.checkout-layout{grid-template-columns:1fr}}
+.checkout-main{min-width:0}
+.checkout-side{position:sticky;top:5rem}
+hr{border:0;border-top:1px solid var(--line);margin:1rem 0}
 .link{background:none;border:0;color:var(--primary);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:0}.back{margin-bottom:.6rem;display:inline-block}
 /* hero and home */
 .hero{position:relative;overflow:hidden;background:var(--primary);color:#fff;border-radius:28px;padding:clamp(2rem,6vw,4.5rem) clamp(1.3rem,5vw,3.5rem);min-height:min(72vh,540px);display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:1.2rem}
@@ -227,6 +231,24 @@ const go = v => {
   S.view = v; draw(); window.scrollTo(0, 0);
   if (S.token) { if (v === 'requests') loadRequests(); if (v === 'key') loadCode(); if (v === 'rewards' || v === 'dashboard') refreshPoints(); }
 };
+
+// Handle browser navigation
+window.addEventListener('popstate', (event) => {
+  const current = window.location.pathname;
+  const newView = current === '/' ? 'home' :
+                  current.includes('/bookings') ? 'bookings' :
+                  current.includes('/checkin') ? 'checkin' :
+                  current.includes('/key') ? 'key' :
+                  current.includes('/requests') ? 'requests' :
+                  current.includes('/offers') ? 'offers' :
+                  current.includes('/rewards') ? 'rewards' :
+                  current.includes('/payment') ? 'confirmed' :
+                  'home';
+  if (S.token || S.view !== newView) {
+    S.view = newView;
+    draw();
+  }
+});
 const backTo = (to, label) => `<button class="link back" onclick="go('${to}')">← ${label}</button>`;
 const empty = (text, btn, to) => `<div class="card"><p>${text}</p><button class="go" onclick="go('${to}')">${btn}</button></div>`;
 
@@ -285,22 +307,78 @@ const screens = {
     <p class="big" style="font-size:1.8rem;margin:.3rem 0">${naira(r.pricePerNight)} <span class="muted" style="font-size:1rem;font-weight:500">/ night</span></p>
     <button class="go" onclick="go('bookingDetails')">Select this room</button></div>`; },
 
-  bookingDetails: () => { const r = room(); return !r ? empty('Choose a room first.', 'See rooms', 'rooms') :
-    `${backTo('roomDetail', 'Room details')}<h2>Booking details</h2><div class="card"><p style="margin-top:0"><b>${esc(r.roomType || 'Room')}</b> · Room ${esc(r.roomNumber || 'to be assigned')}</p>
-    <label for="from">Check-in date</label><input id="from" type="date" min="${today()}" value="${S.from}" onchange="setFrom(this.value)">
-    <label for="to">Check-out date</label><input id="to" type="date" min="${S.from || today()}" value="${S.to}" onchange="S.to=this.value;draw()">
-    <label for="gs">Guests</label><input id="gs" type="number" min="1" max="${r.capacity || 10}" value="${S.guests}" onchange="S.guests=+this.value||1">
-    <p><b>${nights()} night(s)</b> · Estimated total <b>${naira(estimate())}</b></p>
-    <p class="muted" style="margin:0">The hotel confirms the final amount at the next step.</p>${msg()}
-    <button class="go" onclick="toVerify()" ${S.busy ? 'disabled' : ''}>${S.busy ? 'Reserving…' : S.token ? 'Continue' : 'Continue (sign in required)'}</button></div>`; },
+  bookingDetails: () => {
+    const r = room();
+    if (!r) return empty('Choose a room first.', 'See rooms', 'rooms');
+    return `${backTo('roomDetail', 'Room details')}
+      <div class="checkout-layout">
+        <div class="checkout-main">
+          <h2>Guest details</h2>
+          <div class="card">
+            <h3>Contact information</h3>
+            <label for="em_c">Email address</label><input id="em_c" type="email" value="${S.user?.email || ''}" placeholder="email@example.com">
+            <label for="ph_c">Phone number</label><input id="ph_c" type="tel" value="${S.user?.phone || ''}" placeholder="+234 ...">
 
-  idVerify: () => !S.pending ? empty('Choose a room first.', 'See rooms', 'rooms') : `<h2>Verify your identity</h2><div class="card">
+            <h3 style="margin-top:2rem">Primary guest</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div><label for="fn_p">First name</label><input id="fn_p" value="${S.user?.firstName || ''}"></div>
+              <div><label for="ln_p">Last name</label><input id="ln_p" value="${S.user?.lastName || ''}"></div>
+            </div>
+
+            ${S.guests > 1 ? `
+              <h3 style="margin-top:2rem">Additional guests</h3>
+              ${Array.from({ length: S.guests - 1 }).map((_, i) => `
+                <label>Guest ${i + 2} name</label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                  <input placeholder="First name">
+                  <input placeholder="Last name">
+                </div>
+              `).join('')}
+            ` : ''}
+
+            <h3 style="margin-top:2rem">Stay dates</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div><label for="from">Check-in</label><input id="from" type="date" min="${today()}" value="${S.from}" onchange="setFrom(this.value)"></div>
+              <div><label for="to">Check-out</label><input id="to" type="date" min="${S.from || today()}" value="${S.to}" onchange="S.to=this.value;draw()"></div>
+            </div>
+            ${msg()}
+            <button class="go" onclick="toVerify()" ${S.busy ? 'disabled' : ''}>${S.busy ? 'Reserving…' : 'Continue to verification'}</button>
+          </div>
+        </div>
+        <aside class="checkout-side">
+          <div class="card">
+            <h3>Your stay</h3>
+            <p><b>${esc(r.roomType)}</b> · ${esc(r.tier || 'Standard')}</p>
+            <hr style="border:0;border-top:1px solid var(--line);margin:1rem 0">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+              <span class="muted">${naira(r.pricePerNight)} x ${nights()} nights</span>
+              <b>${naira(estimate())}</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:1.2rem;margin-top:1rem">
+              <b>Total</b>
+              <b style="color:var(--primary)">${naira(estimate())}</b>
+            </div>
+          </div>
+        </aside>
+      </div>`;
+  },
+
+  idVerify: () => {
+    const pendingId = S.pending?._id;
+    if (!pendingId) return empty('Choose a room first.', 'See rooms', 'rooms');
+    // Warm up ID verification endpoint when page opens
+    if (!S.idVerifyWarmed) {
+      S.idVerifyWarmed = true;
+      fetch(API + '/api/bookings/' + sid(pendingId) + '/id-verification/warm', { method: 'POST' }).catch(() => {});
+    }
+    return `<h2>Verify your identity</h2><div class="card">
     <p style="margin-top:0">Add a photo of your passport, driver's licence or national ID. We use it to confirm it's you.</p>
     ${idChip(S.pending)}
     ${ID.uploadPath ? '' : '<div class="msg info">ID verification is not connected to Backend yet. Payment stays blocked until it is.</div>'}
     <label for="idt">ID type</label><select id="idt">${ID.types.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>
-    <label for="idf">ID photo</label><input id="idf" type="file" accept="image/*" class="idf-input" ${S.pending?.idVerificationStatus !== 'Verified' ? '' : 'disabled'}>${msg()}
-    <button class="go" onclick="doIdVerify()" ${S.busy ? 'disabled' : ''}>${S.busy ? 'Checking your ID…' : 'Verify my ID'}</button></div>`,
+    <label for="idf">ID photo</label><input id="idf" type="file" accept="image/jpeg,image/png,image/webp" class="idf-input" ${S.pending?.idVerificationStatus !== 'Verified' ? '' : 'disabled'}>${msg()}
+    <button class="go" onclick="doIdVerify()" ${S.busy ? 'disabled' : ''}>${S.busy ? 'Checking your ID…' : 'Verify my ID'}</button></div>`;
+  },
 
   pay: () => !S.pending ? empty('Choose a room first.', 'See rooms', 'rooms') : `<h2>Payment</h2><div class="card">
     <p style="margin-top:0">${hotelName(S.pending)}${roomOf(S.pending).roomType ? ' · ' + esc(roomOf(S.pending).roomType) : ''}</p>
@@ -439,7 +517,10 @@ function doIdVerify() {
       try { d = await call(url, { method: 'POST', body: fd }); ID.field = f; last = null; console.info('ID photo field that Backend accepted:', f); break; }
       catch (e) { last = e; if (!/unexpected.*field|400/i.test(e.message)) throw e; }
     }
-    if (last) throw new Error('Backend did not accept the photo field name. Ask Backend which field name the ID upload expects.');
+    if (last) {
+  const errorMsg = last.message || 'Backend did not accept the photo field name';
+  throw new Error(`ID upload failed: ${errorMsg}`);
+}
     const fromReply = [d.booking, d.data].find(x => x && typeof x === 'object' && x.idVerificationStatus);
     S.bookings = await api.myBookings().catch(() => S.bookings);
     S.pending = { ...S.pending, ...(fromReply || {}), ...(S.bookings.find(x => x._id === id) || {}) };
@@ -493,6 +574,8 @@ function doCheckIn(id) {
       await call(url, { method: 'POST', body: fd });
       S.idDone[id] = true;
     }
+    // Mark pre-arrival check-in via backend
+    await call('/api/bookings/' + sid(id) + '/pre-arrival-check-in', { method: 'PATCH' });
     S.checkedIn[id] = true; delete S.codes[id]; S.codeErr = '';
   });
 }
